@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+
+<head>
+<title>Registration Page</title>
+<meta name="charset" content="UTF-8">
+<meta name="author" content="Ruoxin Zhang">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body onload="myFunction()">
+    <form id="registration-form" method="get">
+        <!-- Input Textfield -->
+        <label>Account name</label>
+        <input type="text" id="account-name" onkeyup="accountNameValidation()" required><br>
+        <label>Display name</label>
+        <input type="text" id="display-name"><br>
+        <label>Email Address</label>
+        <input type="email" id="email" onkeyup="emailValidation()" placeholder="a@b.com" required><br>
+        <label>Phone number</label>
+        <input type="tel" id="telephone" onkeyup="phoneValidation()" placeholder="012-345-6789" required><br>
+        <label>Date of birth</label>
+        <input type="date" id="dob" onchange="ageValidation()" required><br>
+        <label>Zipcode</label>
+        <input type="text" id="zipcode" onkeyup="zipcodeValidation()" required><br>
+        <label>Password</label>
+        <input type="password" id="pwd" required><br>
+        <label>Password Confirmation</label>
+        <input type="password" id="pwd-confirmation" onkeyup="passwordValidation()" required><br>
+        <!-- Buttons -->
+        <input type="reset" id="clear-button" value="Clear">
+        <input type="submit" id="submit-button" value="Submit" onclick="clickSubmitButton()">
+        <!-- Hidden Timestamp -->
+        <input type="hidden" id="timestamp" name="timestamp" value="">
+    </form>
+    <script>
+        function myFunction() {}
+
+        window.addEventListener("load", function (event) {
+            let timestamp = document.getElementById("timestamp");
+            timestamp.value = Date.now();
+        });
+
+        function accountNameValidation() {
+            let accountName = document.getElementById("account-name");
+            if (!/[A-Za-z][A-Za-z0-9]*/.test(accountName.value)) {
+                accountName.setCustomValidity("Your account name should start with a letter, and contain letter/digit only");
+            } else {
+                accountName.setCustomValidity("");
+            }
+            accountName.reportValidity();
+        }
+
+        function passwordValidation() {
+            let pwd0 = document.getElementById("pwd");
+            let pwd1 = document.getElementById("pwd-confirmation");
+            if (pwd0.value != pwd1.value) {
+                pwd1.setCustomValidity("Your confirmation password doesn't match your password!");
+            } else {
+                pwd1.setCustomValidity("");
+            }
+            pwd1.reportValidity();
+        }
+
+        function emailValidation() {
+            let email = document.getElementById("email");
+            if (!/[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email.value)) {
+                email.setCustomValidity("Your email should be in the format of a@b.com");
+            } else {
+                email.setCustomValidity("");
+            }
+            email.reportValidity();
+        }
+
+        function phoneValidation() {
+            let phone = document.getElementById("telephone");
+            if (!/[0-9]{3}-[0-9]{3}-[0-9]{4}/.test(phone.value) || phone.value.length != 12) {
+                phone.setCustomValidity("Your phone input should be in the format of 123-123-1234");
+            } else {
+                phone.setCustomValidity("");
+            }
+            phone.reportValidity();
+        }
+
+        function ageValidation() {
+            let dob = document.getElementById("dob");
+            let birthdate = new Date(dob.value);
+            let time_diff = new Date(new Date() - birthdate);
+            let age_diff = Math.abs(time_diff.getUTCFullYear() - 1970);
+            if (age_diff < 18) {
+                dob.setCustomValidity("You have to be at least 18 years old to register");
+            } else {
+                dob.setCustomValidity("");
+            }
+            dob.reportValidity();
+        }
+
+        function zipcodeValidation() {
+            let zipcode = document.getElementById("zipcode");
+            if (!/[0-9]{5}/.test(zipcode.value)) {
+                zipcode.setCustomValidity("Input must be in the format of 90056");
+            } else {
+                zipcode.setCustomValidity("");
+            }
+            zipcode.reportValidity();
+        }
+
+        function clickSubmitButton() {
+            document.getElementById('timestamp').value = Date().now;
+        }
+    </script>
+
+</body>
+</html>
